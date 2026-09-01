@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SOLID GROUND - Welcome Gathering | University Christian Fellowship</title>
+  <meta name="description" content="Form pendaftaran dan RSVP resmi untuk acara penyambutan mahasiswa Solid Ground di lingkungan Kampus Petra. Dapatkan E-Ticket dan QR Code kehadiranmu!">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- QR Code & Confetti Library (Lightweight CDN with fallback) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Ambient Light Layer & Particle Canvas -->
+  <div class="bg-ambient-layer"></div>
+  <canvas id="particle-canvas"></canvas>
+
+  <div class="app-wrapper">
+    
+
+
+    <main class="main-content">
+      
+      <!-- ================= 1. LANDING PAGE VIEW ================= -->
+      <section class="landing-view" id="landing-view">
+        
+        <!-- Badge -->
+        <div class="badge-pill">
+          <span>WELCOME FRESHMEN • 11 SEPT</span>
+        </div>
+
+        <p class="hero-subtitle">Petra Christian University Fellowship</p>
+        <h1 class="hero-title">SOLID GROUND</h1>
+        <p class="hero-caption">Rooted in Faith, Growing in Fellowship</p>
+
+        <!-- Interactive Poster Card Showcase -->
+        <div class="poster-card-container">
+          <div class="poster-card" id="poster-card-trigger" title="Klik untuk memperbesar poster">
+            
+            <!-- SVG / Vector Stylized Poster Representation -->
+            <div class="poster-mockup-wrapper" style="position: relative; width: 100%; aspect-ratio: 9/16; background: #234A16; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 36px 20px; border: 1.5px solid rgba(244, 239, 230, 0.3);">
+              
+              <!-- Subtle arched background decoration -->
+              <div style="position: absolute; top: 12%; width: 220px; height: 320px; border: 2px solid rgba(244, 239, 230, 0.2); border-radius: 110px 110px 0 0; pointer-events: none;"></div>
+              
+              <div style="text-align: center; z-index: 2;">
+                <p style="font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: #F4EFE6; opacity: 0.9; margin-bottom: 8px;">University Christian Fellowship</p>
+                <h2 style="font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 3px; color: #F4EFE6; line-height: 1.1; margin-bottom: 6px;">SOLID GROUND</h2>
+                <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: #F4EFE6; letter-spacing: 1px;">Welcome Gathering</p>
+              </div>
+
+              <!-- Center Gothic Arch & Olive Branch Illustration -->
+              <div style="z-index: 2; margin: 15px 0;">
+                <svg width="130" height="150" viewBox="0 0 140 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Arch outline -->
+                  <path d="M20 150V70C20 42.3858 42.3858 20 70 20C97.6142 20 120 42.3858 120 70V150" stroke="#F4EFE6" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M32 150V75C32 54.0132 49.0132 37 70 37C90.9868 37 108 54.0132 108 75V150" stroke="#F4EFE6" stroke-width="1.5" stroke-opacity="0.6"/>
+                  <!-- Cross -->
+                  <line x1="70" y1="55" x2="70" y2="105" stroke="#F4EFE6" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="58" y1="70" x2="82" y2="70" stroke="#F4EFE6" stroke-width="2" stroke-linecap="round"/>
+                  <!-- Olive Branch -->
+                  <path d="M30 130C50 115 80 110 110 95" stroke="#F4EFE6" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="50" cy="116" r="4" fill="#F4EFE6" fill-opacity="0.8"/>
+                  <circle cx="70" cy="108" r="4.5" fill="#F4EFE6" fill-opacity="0.8"/>
+                  <circle cx="92" cy="98" r="4" fill="#F4EFE6" fill-opacity="0.8"/>
+                </svg>
+              </div>
+
+              <div style="text-align: center; z-index: 2;">
+                <p style="font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; color: #F4EFE6; margin-bottom: 4px;">SEPTEMBER 11</p>
+                <p style="font-size: 0.85rem; color: #F4EFE6; opacity: 0.9; margin-bottom: 2px;">18:00 WIB • Campus Fellowship Hall</p>
+                <p style="font-size: 0.72rem; color: #F4EFE6; opacity: 0.75; letter-spacing: 0.5px;">All Petra Freshmen & Students Welcome</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Event Highlights -->
+        <div class="event-info-grid">
+          <div class="info-box">
+            <div class="info-icon">📅</div>
+            <div class="info-label">Tanggal</div>
+            <div class="info-val">11 Sept 2024</div>
+          </div>
+          <a 
+            href="https://maps.app.goo.gl/ie8sp2iiJtBRsLp29" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="info-box info-box-link" 
+            title="Buka lokasi di Google Maps"
+          >
+            <div class="info-icon">📍</div>
+            <div class="info-label">Lokasi <span>↗</span></div>
+            <div class="info-val">Area Petra</div>
+          </a>
+        </div>
+
+        <p class="event-narrative">
+          Memulai perkuliahan di semester pertama seringkali penuh tantangan. Jangan berjalan sendirian! Mari bergabung bersama teman-teman komunitas Kristiani di Petra untuk membangun <strong>fondasi yang kokoh (Solid Ground)</strong> dan saling mendukung sepanjang masa studi.
+        </p>
+
+        <!-- CTA Action Trigger to open form -->
+        <button type="button" class="cta-btn-primary" id="open-register-btn">
+          <span>Daftar Sekarang & Ambil Tiket</span>
+          <span>➔</span>
+        </button>
+
+        <p class="sub-cta-note">
+          🎟️ Gratis • Tempat terbatas untuk mahasiswa baru & mahasiswa Petra
+        </p>
+      </section>
+
+
+      <!-- ================= 2. REGISTRATION FORM VIEW ================= -->
+      <section class="form-view" id="form-view">
+        
+        <button type="button" class="back-btn" id="back-to-landing-btn">
+          <span>←</span> Kembali ke Info Acara
+        </button>
+
+        <div class="form-card">
+          
+          <div class="form-header">
+            <h2 class="form-title">Register Today</h2>
+            <p class="form-subtitle">Lengkapi formulir di bawah ini untuk mendapatkan E-Ticket & QR Code kehadiranmu.</p>
+          </div>
+
+          <form id="rsvp-registration-form">
+            
+            <!-- 1. Nama Lengkap -->
+            <div class="form-group">
+              <label class="form-label" for="input-fullname">
+                Nama <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-fullname" 
+                  name="fullname" 
+                  class="form-input" 
+                  placeholder="Contoh: Jonathan Chris" 
+                  required
+                >
+                <span class="input-icon-right">👤</span>
+              </div>
+            </div>
+
+            <!-- 2. Jurusan -->
+            <div class="form-group">
+              <label class="form-label" for="input-jurusan">
+                Jurusan <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-jurusan" 
+                  name="jurusan" 
+                  class="form-input" 
+                  placeholder="Contoh: Informatika / DKV / Manajemen Bisnis" 
+                  required
+                >
+                <span class="input-icon-right">🎓</span>
+              </div>
+            </div>
+
+            <!-- 3. Kuliah Dimana -->
+            <div class="form-group">
+              <label class="form-label" for="input-campus">
+                Kuliah Dimana <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-campus" 
+                  name="campus" 
+                  class="form-input" 
+                  placeholder="Contoh: Universitas Kristen Petra" 
+                  value="Universitas Kristen Petra"
+                  required
+                >
+                <span class="input-icon-right">🏛️</span>
+              </div>
+            </div>
+
+            <!-- 4. Tahun Masuk -->
+            <div class="form-group">
+              <label class="form-label" for="input-year">
+                Tahun Masuk <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-year" 
+                  name="year" 
+                  class="form-input" 
+                  placeholder="Contoh: 2024" 
+                  required
+                >
+                <span class="input-icon-right">📅</span>
+              </div>
+            </div>
+
+            <!-- 5. Instagram -->
+            <div class="form-group">
+              <label class="form-label" for="input-instagram">
+                Instagram <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-instagram" 
+                  name="instagram" 
+                  class="form-input" 
+                  placeholder="@username" 
+                  required
+                >
+                <span class="input-icon-right">📸</span>
+              </div>
+            </div>
+
+            <!-- 6. Nomer Telepon -->
+            <div class="form-group">
+              <label class="form-label" for="input-whatsapp">
+                Nomer Telepon (WhatsApp) <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="tel" 
+                  id="input-whatsapp" 
+                  name="whatsapp" 
+                  class="form-input" 
+                  placeholder="081234567890" 
+                  required
+                >
+                <span class="input-icon-right">📱</span>
+              </div>
+            </div>
+
+            <!-- 7. Pertanyaan Konfirmasi Kehadiran (Semua Jawaban Tidak Bisa Nolak) -->
+            <div class="form-group">
+              <label class="form-label" for="input-confirmation">
+                Bisa datang tanggal 11 September kan? <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <select id="input-confirmation" name="confirmation" class="form-select" required>
+                  <option value="Pasti datang dong! 🔥" selected>Pasti datang dong! 🔥</option>
+                  <option value="Blum bisa nih, next t 😥">Blum bisa nih 😥</option>
+                </select>
+              </div>
+            </div>
+
+            <p class="form-footer-text">
+              Join us for an evening of community, worship, and connection. You will receive an instant digital QR ticket.
+            </p>
+
+            <button type="submit" class="btn-submit-rsvp" id="submit-btn">
+              <span>RSVP & REGISTER NOW</span>
+              <span>🎟️</span>
+            </button>
+          </form>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= 3. E-TICKET PASS MODAL ================= -->
+  <div class="ticket-modal" id="ticket-modal">
+    <div class="ticket-wrapper">
+      
+      <!-- Physical Ticket Card -->
+      <div class="ticket-card" id="printable-ticket">
+        <div class="ticket-notch-left"></div>
+        <div class="ticket-notch-right"></div>
+
+        <!-- Ticket Green Header -->
+        <div class="ticket-header">
+          <p class="ticket-badge">University Christian Fellowship</p>
+          <h3 class="ticket-event-name">SOLID GROUND</h3>
+          <p class="ticket-event-sub">Welcome Gathering • Petra Campus</p>
+        </div>
+
+        <!-- Ticket Body -->
+        <div class="ticket-body">
+          <p class="ticket-attendee-name" id="ticket-name-val">John Doe</p>
+          <p class="ticket-attendee-prodi" id="ticket-prodi-val">Informatika • Maba 2024</p>
+
+          <div class="ticket-meta-grid">
+            <div class="ticket-meta-item">
+              <p class="meta-label">Tanggal</p>
+              <p class="meta-val">11 Sept 2024</p>
+            </div>
+            <div class="ticket-meta-item">
+              <p class="meta-label">Waktu</p>
+              <p class="meta-val">18:00 WIB</p>
+            </div>
+            <div class="ticket-meta-item">
+              <p class="meta-label">Lokasi</p>
+              <p class="meta-val">Fellowship Hall</p>
+            </div>
+            <div class="ticket-meta-item">
+              <p class="meta-label">Status</p>
+              <p class="meta-val" style="color: #234A16;">Confirmed ✅</p>
+            </div>
+          </div>
+
+          <div class="ticket-divider-dashed"></div>
+
+          <!-- QR Code Section -->
+          <div class="ticket-qr-section">
+            <div class="qr-frame">
+              <div id="ticket-qrcode"></div>
+            </div>
+            <p class="ticket-code-id" id="ticket-id-val">SG-2024-001</p>
+            <p class="ticket-instructions">Tunjukkan QR code ini ke panitia di meja registrasi Hari-H</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="ticket-actions-group">
+        <button type="button" class="btn-download-ticket" id="download-ticket-btn">
+          <span>📥</span> Simpan / Download Tiket (PNG)
+        </button>
+        <button type="button" class="btn-close-ticket" id="close-ticket-btn">
+          Tutup & Kembali
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 4. POSTER LIGHTBOX MODAL ================= -->
+  <div class="lightbox-modal" id="poster-lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close-btn" id="close-lightbox-btn">&times;</button>
+      <div style="background: #234A16; border: 2px solid #F4EFE6; border-radius: 12px; padding: 40px 24px; text-align: center; max-width: 360px; margin: 0 auto; color: #F4EFE6;">
+        <p style="font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; opacity: 0.9;">UNIVERSITY CHRISTIAN FELLOWSHIP</p>
+        <h2 style="font-family: 'Cinzel', serif; font-size: 2.4rem; font-weight: 800; letter-spacing: 3px; margin: 10px 0 4px; color: #F4EFE6;">SOLID GROUND</h2>
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; margin-bottom: 20px;">Welcome Gathering</p>
+        
+        <div style="margin: 20px 0;">
+          <svg width="120" height="140" viewBox="0 0 140 160" fill="none">
+            <path d="M20 150V70C20 42.3858 42.3858 20 70 20C97.6142 20 120 42.3858 120 70V150" stroke="#F4EFE6" stroke-width="2.5"/>
+            <line x1="70" y1="55" x2="70" y2="105" stroke="#F4EFE6" stroke-width="2"/>
+            <line x1="58" y1="70" x2="82" y2="70" stroke="#F4EFE6" stroke-width="2"/>
+            <path d="M30 130C50 115 80 110 110 95" stroke="#F4EFE6" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <p style="font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;">SEPTEMBER 11</p>
+        <p style="font-size: 0.9rem; margin-top: 4px;">18:00 WIB • Campus Fellowship Hall</p>
+        <p style="font-size: 0.78rem; opacity: 0.8; margin-top: 14px;">All Are Welcome • Food, Fellowship, Faith</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Alert -->
+  <div class="toast-alert" id="toast-alert">
+    <span id="toast-icon">✅</span>
+    <span id="toast-message">Pesan notifikasi</span>
+  </div>
+
+  <!-- App Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
