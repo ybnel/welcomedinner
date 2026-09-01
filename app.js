@@ -290,7 +290,7 @@ function initTicketExporter() {
     ctx.fillStyle = '#FAF7F2';
     ctx.font = '600 20px -apple-system, sans-serif';
     ctx.letterSpacing = '4px';
-    ctx.fillText('UNIVERSITY CHRISTIAN FELLOWSHIP', 400, 110);
+    ctx.fillText('YOUNG CHRISTIAN PEOPLE FELLOWSHIP', 400, 110);
 
     ctx.font = 'bold 50px Georgia, serif';
     ctx.fillText('SOLID GROUND', 400, 180);
@@ -325,8 +325,8 @@ function initTicketExporter() {
     ctx.fillStyle = '#16222F';
     ctx.font = 'bold 22px -apple-system, sans-serif';
     ctx.fillText('11 Sept 2024', 120, 535);
-    ctx.fillText('18:00 WIB', 420, 535);
-    ctx.fillText('Fellowship Hall Petra', 120, 605);
+    ctx.fillText('17:00 WIB', 420, 535);
+    ctx.fillText('Siwalankerto Permai', 120, 605);
     ctx.fillStyle = '#234A16';
     ctx.fillText('Confirmed ✅', 420, 605);
 
