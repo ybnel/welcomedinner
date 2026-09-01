@@ -1,17 +1,25 @@
-/**
- * SOLID GROUND - COMMITTEE SCANNER & ATTENDANCE MANAGER
- * Handles real-time QR Camera Scanning, Duplicate Detection, Audio Feedback & CSV Export
- */
+import { 
+  getAttendeesFromFirebase, 
+  updateCheckInFirebase, 
+  subscribeAttendeesFromFirebase 
+} from "./firebaseService.js";
 
 let html5QrCode = null;
 let isScanning = false;
 let audioCtx = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Initial Load dari Firestore / Cache
   initStatsAndTable();
   initScannerControls();
   initManualSearch();
   initExportCSV();
+
+  // 2. Real-Time Sync: Otomatis terupdate saat peserta baru mendaftar atau panitia lain scan
+  subscribeAttendeesFromFirebase((liveAttendees) => {
+    const searchVal = document.getElementById('manual-search-input') ? document.getElementById('manual-search-input').value : '';
+    initStatsAndTable(searchVal);
+  });
 });
 
 /* ================= 1. AUDIO FEEDBACK (SYNTHESIZER) ================= */
@@ -176,7 +184,7 @@ function renderAttendeeTable(list, filterQuery = '') {
   `).join('');
 }
 
-window.toggleCheckIn = function(ticketId) {
+window.toggleCheckIn = async function(ticketId) {
   const list = getAttendees();
   const attendee = list.find(a => a.ticketId === ticketId);
   if (!attendee) return;
@@ -187,9 +195,12 @@ window.toggleCheckIn = function(ticketId) {
   saveAttendees(list);
   initStatsAndTable(document.getElementById('manual-search-input').value);
 
+  // Sync ke Firebase Firestore
+  await updateCheckInFirebase(attendee.ticketId, attendee.checkedIn, attendee.checkedInAt);
+
   if (attendee.checkedIn) {
     playSound('success');
-    showResultBanner('success', `Check-In Berhasil: ${attendee.fullname}`, `${attendee.prodi} (${attendee.ticketId})`);
+    showResultBanner('success', `Check-In Berhasil: ${attendee.fullname}`, `${attendee.jurusan || ''} (${attendee.ticketId})`);
   } else {
     showResultBanner('warning', `Status Dibatalkan: ${attendee.fullname}`, 'Status diubah menjadi Belum Hadir');
   }
@@ -277,7 +288,7 @@ function onQrScanError(errorMessage) {
   // Ignored continuous frame scan error
 }
 
-function processScannedTicket(ticketId) {
+async function processScannedTicket(ticketId) {
   const list = getAttendees();
   const attendee = list.find(a => a.ticketId.toUpperCase() === ticketId.toUpperCase());
 
@@ -292,7 +303,7 @@ function processScannedTicket(ticketId) {
     showResultBanner(
       'duplicate',
       `⚠️ SUDAH CHECK-IN`,
-      `${attendee.fullname} (${attendee.prodi}) sudah check-in pada pukul ${attendee.checkedInAt || 'sebelumnya'}.`
+      `${attendee.fullname} (${attendee.jurusan || ''}) sudah check-in pada pukul ${attendee.checkedInAt || 'sebelumnya'}.`
     );
     return;
   }
@@ -303,11 +314,14 @@ function processScannedTicket(ticketId) {
   saveAttendees(list);
   initStatsAndTable();
 
+  // Sync real-time ke Firebase Firestore
+  await updateCheckInFirebase(attendee.ticketId, attendee.checkedIn, attendee.checkedInAt);
+
   playSound('success');
   showResultBanner(
     'success',
     `✅ SELAMAT DATANG!`,
-    `${attendee.fullname} • ${attendee.prodi}`,
+    `${attendee.fullname} • ${attendee.jurusan || ''} (${attendee.campus || 'Petra'})`,
     `Check-in tercatat: ${attendee.checkedInAt} WIB`
   );
 }

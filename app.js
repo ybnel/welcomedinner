@@ -1,9 +1,6 @@
-/**
- * SOLID GROUND - REGISTRATION & TICKETING ENGINE
- * University Christian Fellowship - Petra Campus
- */
+import { saveAttendeeToFirebase, getAttendeesFromFirebase } from "./firebaseService.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initParticleBackground();
   initNavigation();
   initFormHandler();
@@ -122,12 +119,12 @@ function initFormHandler() {
 
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Disable button to prevent double-submit
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span>Menerbitkan Tiket...</span> ⏳';
+    submitBtn.innerHTML = '<span>Menghubungkan ke Cloud...</span> ⏳';
 
     const formData = new FormData(form);
     const fullname = formData.get('fullname').trim();
@@ -139,7 +136,13 @@ function initFormHandler() {
     const confirmation = formData.get('confirmation');
 
     // Generate Unique Ticket Code (e.g. SG-PTR-104)
-    const existingList = getAttendeesList();
+    let existingList = [];
+    try {
+      existingList = await getAttendeesFromFirebase();
+    } catch (err) {
+      existingList = getAttendeesList();
+    }
+    
     const sequenceNumber = (existingList.length + 1).toString().padStart(3, '0');
     const ticketId = `SG-PTR-${sequenceNumber}`;
     const timestamp = new Date().toISOString();
@@ -158,8 +161,8 @@ function initFormHandler() {
       checkedInAt: null
     };
 
-    // Save to LocalStorage
-    saveAttendee(attendeeRecord);
+    // Save to Firebase Firestore & LocalStorage Backup
+    await saveAttendee(attendeeRecord);
     currentTicketData = attendeeRecord;
 
     // Trigger Celebratory Confetti Burst
@@ -170,8 +173,8 @@ function initFormHandler() {
       renderTicketModal(attendeeRecord);
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<span>RSVP & REGISTER NOW</span> <span>🎟️</span>';
-      showToast('Pendaftaran Berhasil! E-Ticket telah terbit.', '🎉');
-    }, 600);
+      showToast('Pendaftaran Berhasil! Data tersimpan di Cloud Firestore.', '🎉');
+    }, 400);
   });
 }
 
@@ -180,7 +183,11 @@ function getAttendeesList() {
   return data ? JSON.parse(data) : [];
 }
 
-function saveAttendee(attendee) {
+async function saveAttendee(attendee) {
+  // 1. Simpan ke Firebase Firestore
+  await saveAttendeeToFirebase(attendee);
+  
+  // 2. Simpan ke LocalStorage cache
   const list = getAttendeesList();
   list.push(attendee);
   localStorage.setItem('solid_ground_attendees', JSON.stringify(list));
