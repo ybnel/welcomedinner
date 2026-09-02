@@ -39,43 +39,13 @@
 
         <!-- Interactive Poster Card Showcase -->
         <div class="poster-card-container">
-          <div class="poster-card" id="poster-card-trigger" title="Klik untuk memperbesar poster">
-            
-            <!-- SVG / Vector Stylized Poster Representation -->
-            <div class="poster-mockup-wrapper" style="position: relative; width: 100%; aspect-ratio: 9/16; background: #234A16; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 36px 20px; border: 1.5px solid rgba(244, 239, 230, 0.3);">
-              
-              <!-- Subtle arched background decoration -->
-              <div style="position: absolute; top: 12%; width: 220px; height: 320px; border: 2px solid rgba(244, 239, 230, 0.2); border-radius: 110px 110px 0 0; pointer-events: none;"></div>
-              
-              <div style="text-align: center; z-index: 2;">
-                <p style="font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: #F4EFE6; opacity: 0.9; margin-bottom: 8px;">Young Christians People Fellowship</p>
-                <h2 style="font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 3px; color: #F4EFE6; line-height: 1.1; margin-bottom: 6px;">SOLID GROUND</h2>
-                <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: #F4EFE6; letter-spacing: 1px;">Welcome Gathering</p>
-              </div>
-
-              <!-- Center Gothic Arch & Olive Branch Illustration -->
-              <div style="z-index: 2; margin: 15px 0;">
-                <svg width="130" height="150" viewBox="0 0 140 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Arch outline -->
-                  <path d="M20 150V70C20 42.3858 42.3858 20 70 20C97.6142 20 120 42.3858 120 70V150" stroke="#F4EFE6" stroke-width="2.5" stroke-linecap="round"/>
-                  <path d="M32 150V75C32 54.0132 49.0132 37 70 37C90.9868 37 108 54.0132 108 75V150" stroke="#F4EFE6" stroke-width="1.5" stroke-opacity="0.6"/>
-                  <!-- Cross -->
-                  <line x1="70" y1="55" x2="70" y2="105" stroke="#F4EFE6" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="58" y1="70" x2="82" y2="70" stroke="#F4EFE6" stroke-width="2" stroke-linecap="round"/>
-                  <!-- Olive Branch -->
-                  <path d="M30 130C50 115 80 110 110 95" stroke="#F4EFE6" stroke-width="2" stroke-linecap="round"/>
-                  <circle cx="50" cy="116" r="4" fill="#F4EFE6" fill-opacity="0.8"/>
-                  <circle cx="70" cy="108" r="4.5" fill="#F4EFE6" fill-opacity="0.8"/>
-                  <circle cx="92" cy="98" r="4" fill="#F4EFE6" fill-opacity="0.8"/>
-                </svg>
-              </div>
-
-              <div style="text-align: center; z-index: 2;">
-                <p style="font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; color: #F4EFE6; margin-bottom: 4px;">11 SEPTEMBER 2026</p>
-                <p style="font-size: 0.85rem; color: #F4EFE6; opacity: 0.9; margin-bottom: 2px;">17:00 WIB • Siwalankerto Permai</p>
-                <p style="font-size: 0.72rem; color: #F4EFE6; opacity: 0.75; letter-spacing: 0.5px;">All Petra Freshmen & Students Welcome</p>
-              </div>
-            </div>
+          <div class="poster-card" id="poster-card-trigger" title="Klik untuk melihat poster penuh">
+            <img 
+              src="assets/posterwd.png" 
+              alt="Poster Resmi SOLID GROUND - Welcome Gathering" 
+              class="poster-img"
+              loading="eager"
+            >
           </div>
         </div>
 
@@ -334,24 +304,11 @@
   <div class="lightbox-modal" id="poster-lightbox">
     <div class="lightbox-content">
       <button class="lightbox-close-btn" id="close-lightbox-btn">&times;</button>
-      <div style="background: #234A16; border: 2px solid #F4EFE6; border-radius: 12px; padding: 40px 24px; text-align: center; max-width: 360px; margin: 0 auto; color: #F4EFE6;">
-        <p style="font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; opacity: 0.9;">YOUNG CHRISTIAN PEOPLE FELLOWSHIP</p>
-        <h2 style="font-family: 'Cinzel', serif; font-size: 2.4rem; font-weight: 800; letter-spacing: 3px; margin: 10px 0 4px; color: #F4EFE6;">SOLID GROUND</h2>
-        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; margin-bottom: 20px;">Welcome Gathering</p>
-        
-        <div style="margin: 20px 0;">
-          <svg width="120" height="140" viewBox="0 0 140 160" fill="none">
-            <path d="M20 150V70C20 42.3858 42.3858 20 70 20C97.6142 20 120 42.3858 120 70V150" stroke="#F4EFE6" stroke-width="2.5"/>
-            <line x1="70" y1="55" x2="70" y2="105" stroke="#F4EFE6" stroke-width="2"/>
-            <line x1="58" y1="70" x2="82" y2="70" stroke="#F4EFE6" stroke-width="2"/>
-            <path d="M30 130C50 115 80 110 110 95" stroke="#F4EFE6" stroke-width="2"/>
-          </svg>
-        </div>
-
-        <p style="font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;">SEPTEMBER 11</p>
-        <p style="font-size: 0.9rem; margin-top: 4px;">17:00 WIB • Campus Fellowship Hall</p>
-        <p style="font-size: 0.78rem; opacity: 0.8; margin-top: 14px;">All Are Welcome • Food, Fellowship, Faith</p>
-      </div>
+      <img 
+        src="assets/posterwd.png" 
+        alt="Poster Resmi SOLID GROUND - Full Resolution" 
+        class="lightbox-img"
+      >
     </div>
   </div>
 
