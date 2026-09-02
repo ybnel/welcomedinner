@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Panitia Scanner & Check-In | SOLID GROUND Petra</title>
+  <title>Panitia Scanner & Check-In | STANDING FIRM Petra</title>
   
+  <!-- Bootstrap Icons & Stylesheet -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="styles.css">
   
   <!-- HTML5-QRCode Library for Web Camera Scanning -->
@@ -20,13 +22,13 @@
     <!-- Top Navigation -->
     <header class="top-nav" style="max-width: 600px;">
       <a href="index.html" class="nav-brand">
-        <span class="nav-brand-icon">←</span>
+        <span class="nav-brand-icon"><i class="bi bi-arrow-left"></i></span>
         <span>KEMBALI KE FORM</span>
       </a>
       <div class="nav-actions">
         <span class="badge-pill" style="margin-bottom: 0; padding: 4px 12px; font-size: 0.68rem;">
           <span class="badge-dot" style="background: #4caf50;"></span>
-          <span>D-DAY SCANNER</span>
+          <span><i class="bi bi-qr-code-scan"></i> D-DAY SCANNER</span>
         </span>
       </div>
     </header>
@@ -70,10 +72,10 @@
         <!-- Scanner Controls -->
         <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
           <button type="button" id="start-scan-btn" class="nav-link-btn" style="background: var(--color-navy); border-color: var(--color-cream-dim); padding: 8px 18px; font-size: 0.82rem; cursor: pointer;">
-            📷 Mulai Kamera
+            <i class="bi bi-camera-fill"></i> Mulai Kamera
           </button>
           <button type="button" id="stop-scan-btn" class="nav-link-btn" style="padding: 8px 18px; font-size: 0.82rem; cursor: pointer; display: none;">
-            ⏹️ Hentikan Kamera
+            <i class="bi bi-stop-circle-fill"></i> Hentikan Kamera
           </button>
         </div>
 
@@ -105,7 +107,7 @@
               style="padding: 10px 14px; background: var(--color-cream); color: var(--color-green); font-size: 0.8rem; cursor: pointer;"
               title="Download Rekap Kehadiran"
             >
-              📥 Export CSV
+              <i class="bi bi-file-earmark-spreadsheet-fill"></i> Export CSV
             </button>
           </div>
         </div>

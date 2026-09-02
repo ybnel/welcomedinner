@@ -124,7 +124,7 @@ function initFormHandler() {
 
     // Disable button to prevent double-submit
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span>Menghubungkan ke Cloud...</span> ⏳';
+    submitBtn.innerHTML = '<span>Menghubungkan ke Cloud...</span> <i class="bi bi-arrow-repeat"></i>';
 
     const formData = new FormData(form);
     const fullname = formData.get('fullname').trim();
@@ -172,7 +172,7 @@ function initFormHandler() {
     setTimeout(() => {
       renderTicketModal(attendeeRecord);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span>RSVP & REGISTER NOW</span> <span>🎟️</span>';
+      submitBtn.innerHTML = '<span>RSVP & REGISTER NOW</span> <i class="bi bi-ticket-perforated-fill"></i>';
       showToast('Pendaftaran Berhasil! Data tersimpan di Cloud Firestore.', '🎉');
     }, 400);
   });
@@ -293,7 +293,7 @@ function initTicketExporter() {
     ctx.fillText('YOUNG CHRISTIAN PEOPLE FELLOWSHIP', 400, 110);
 
     ctx.font = 'bold 50px Georgia, serif';
-    ctx.fillText('SOLID GROUND', 400, 180);
+    ctx.fillText('STANDING FIRM', 400, 180);
 
     ctx.font = 'italic 24px Georgia, serif';
     ctx.fillStyle = '#F4EFE6';
@@ -324,7 +324,7 @@ function initTicketExporter() {
 
     ctx.fillStyle = '#16222F';
     ctx.font = 'bold 22px -apple-system, sans-serif';
-    ctx.fillText('11 Sept 2024', 120, 535);
+    ctx.fillText('11 Sept 2026', 120, 535);
     ctx.fillText('17:00 WIB', 420, 535);
     ctx.fillText('Siwalankerto Permai', 120, 605);
     ctx.fillStyle = '#234A16';
@@ -369,13 +369,13 @@ function initTicketExporter() {
     ctx.fillStyle = '#666666';
     ctx.font = '20px -apple-system, sans-serif';
     ctx.fillText('Tunjukkan QR Code ini ke panitia di meja registrasi Hari-H', 400, 1075);
-    ctx.fillText('Selamat bergabung di komunitas Solid Ground!', 400, 1115);
+    ctx.fillText('Selamat bergabung di komunitas Standing Firm!', 400, 1115);
 
     // Export to Image & Trigger Download
     setTimeout(() => {
       const imageURL = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `Tiket-SolidGround-${currentTicketData.ticketId}.png`;
+      link.download = `Tiket-StandingFirm-${currentTicketData.ticketId}.png`;
       link.href = imageURL;
       document.body.appendChild(link);
       link.click();
