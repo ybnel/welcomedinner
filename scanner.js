@@ -184,13 +184,24 @@ function renderAttendeeTable(list, filterQuery = '') {
   `).join('');
 }
 
+function formatDateTime(date = new Date()) {
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+  const seconds = String(d.getSeconds()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+}
+
 window.toggleCheckIn = async function(ticketId) {
   const list = getAttendees();
   const attendee = list.find(a => a.ticketId === ticketId);
   if (!attendee) return;
 
   attendee.checkedIn = !attendee.checkedIn;
-  attendee.checkedInAt = attendee.checkedIn ? new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : null;
+  attendee.checkedInAt = attendee.checkedIn ? formatDateTime(new Date()) : null;
 
   saveAttendees(list);
   initStatsAndTable(document.getElementById('manual-search-input').value);
@@ -200,7 +211,7 @@ window.toggleCheckIn = async function(ticketId) {
 
   if (attendee.checkedIn) {
     playSound('success');
-    showResultBanner('success', `Check-In Berhasil: ${attendee.fullname}`, `${attendee.jurusan || ''} (${attendee.ticketId})`);
+    showResultBanner('success', `Check-In Berhasil: ${attendee.fullname}`, `${attendee.jurusan || ''} (${attendee.ticketId})`, `Waktu: ${attendee.checkedInAt}`);
   } else {
     showResultBanner('warning', `Status Dibatalkan: ${attendee.fullname}`, 'Status diubah menjadi Belum Hadir');
   }
@@ -310,7 +321,7 @@ async function processScannedTicket(ticketId) {
 
   // Valid Check-In
   attendee.checkedIn = true;
-  attendee.checkedInAt = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+  attendee.checkedInAt = formatDateTime(new Date());
   saveAttendees(list);
   initStatsAndTable();
 
@@ -322,7 +333,7 @@ async function processScannedTicket(ticketId) {
     'success',
     `✅ SELAMAT DATANG!`,
     `${attendee.fullname} • ${attendee.jurusan || ''} (${attendee.campus || 'Petra'})`,
-    `Check-in tercatat: ${attendee.checkedInAt} WIB`
+    `Check-in tercatat: ${attendee.checkedInAt}`
   );
 }
 
@@ -355,15 +366,15 @@ function showResultBanner(type, title, details, timeText = '') {
 
   setTimeout(() => {
     banner.style.display = 'none';
-  }, 5000);
+  }, 6000);
 }
 
-/* ================= 4. MANUAL SEARCH ================= */
+/* ================= 4. MANUAL SEARCH FILTER ================= */
 function initManualSearch() {
-  const searchInput = document.getElementById('manual-search-input');
-  if (!searchInput) return;
+  const input = document.getElementById('manual-search-input');
+  if (!input) return;
 
-  searchInput.addEventListener('input', (e) => {
+  input.addEventListener('input', (e) => {
     initStatsAndTable(e.target.value);
   });
 }
@@ -380,7 +391,19 @@ function initExportCSV() {
       return;
     }
 
-    const headers = ['Ticket ID', 'Nama', 'Jurusan', 'Kuliah Dimana', 'Tahun Masuk', 'Instagram', 'No Telepon/WA', 'Konfirmasi Hadir 11 Sept', 'Status Kehadiran', 'Waktu Check-In'];
+    const headers = [
+      'Ticket ID', 
+      'Nama', 
+      'Jurusan', 
+      'Kuliah Dimana', 
+      'Tahun Masuk', 
+      'Instagram', 
+      'No Telepon/WA', 
+      'Konfirmasi Hadir 11 Sept', 
+      'Waktu Daftar',
+      'Status Kehadiran', 
+      'Waktu Check-In'
+    ];
     const rows = list.map(a => [
       `"${a.ticketId}"`,
       `"${a.fullname}"`,
@@ -390,6 +413,7 @@ function initExportCSV() {
       `"${a.instagram || ''}"`,
       `"${a.whatsapp || ''}"`,
       `"${a.confirmation || ''}"`,
+      `"${a.registeredAt || '-'}"`,
       `"${a.checkedIn ? 'Hadir' : 'Belum Hadir'}"`,
       `"${a.checkedInAt || '-'}"`
     ]);
@@ -398,7 +422,7 @@ function initExportCSV() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Rekap-Kehadiran-SolidGround-${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `Rekap-Kehadiran-StandingFirm-${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
