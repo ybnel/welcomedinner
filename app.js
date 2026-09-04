@@ -240,16 +240,86 @@ function renderTicketModal(data) {
 }
 
 /* ================= 5. HIGH-RESOLUTION TICKET EXPORTER (CANVAS PNG) ================= */
+async function drawQrCodeOnCanvas(ctx, qrPayload, x, y, size) {
+  return new Promise((resolve) => {
+    try {
+      const container = document.createElement('div');
+      container.style.position = 'absolute';
+      container.style.left = '-9999px';
+      container.style.top = '-9999px';
+      document.body.appendChild(container);
+
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(container, {
+          text: qrPayload,
+          width: size * 2, // 2x for sharp retina quality
+          height: size * 2,
+          colorDark: '#16222F',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+
+        setTimeout(() => {
+          const canvas = container.querySelector('canvas');
+          const img = container.querySelector('img');
+
+          if (canvas && canvas.width > 0) {
+            ctx.drawImage(canvas, x, y, size, size);
+            try { document.body.removeChild(container); } catch (e) {}
+            resolve(true);
+            return;
+          }
+
+          if (img && img.src) {
+            const tempImg = new Image();
+            tempImg.crossOrigin = 'anonymous';
+            tempImg.onload = () => {
+              ctx.drawImage(tempImg, x, y, size, size);
+              try { document.body.removeChild(container); } catch (e) {}
+              resolve(true);
+            };
+            tempImg.onerror = () => {
+              try { document.body.removeChild(container); } catch (e) {}
+              resolve(false);
+            };
+            tempImg.src = img.src;
+            return;
+          }
+
+          try { document.body.removeChild(container); } catch (e) {}
+          resolve(false);
+        }, 150);
+      } else {
+        const fallbackImg = new Image();
+        fallbackImg.crossOrigin = 'anonymous';
+        fallbackImg.onload = () => {
+          ctx.drawImage(fallbackImg, x, y, size, size);
+          try { document.body.removeChild(container); } catch (e) {}
+          resolve(true);
+        };
+        fallbackImg.onerror = () => {
+          try { document.body.removeChild(container); } catch (e) {}
+          resolve(false);
+        };
+        fallbackImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size * 2}x${size * 2}&data=${encodeURIComponent(qrPayload)}`;
+      }
+    } catch (err) {
+      console.error('QR draw error:', err);
+      resolve(false);
+    }
+  });
+}
+
 function initTicketExporter() {
   const downloadBtn = document.getElementById('download-ticket-btn');
   if (!downloadBtn) return;
 
-  downloadBtn.addEventListener('click', () => {
+  downloadBtn.addEventListener('click', async () => {
     if (!currentTicketData) return;
 
     showToast('Menyiapkan gambar tiket...', '⏳');
 
-    // Create an offscreen high-res Canvas (Width: 800px, Height: 1200px)
+    // Create an offscreen high-res Canvas (Width: 800px, Height: 1250px)
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 1250;
@@ -350,15 +420,19 @@ function initTicketExporter() {
     ctx.arc(760, 660, 24, 0, Math.PI * 2);
     ctx.fill();
 
-    // QR Code Section
-    const qrImg = document.querySelector('#ticket-qrcode img') || document.querySelector('#ticket-qrcode canvas');
-    if (qrImg) {
-      // Draw white background frame for QR
-      ctx.fillStyle = '#FFFFFF';
-      drawRoundedRect(ctx, 270, 710, 260, 260, 16);
-      ctx.fill();
-      ctx.drawImage(qrImg, 290, 730, 220, 220);
-    }
+    // QR Code Section - White Card Base
+    ctx.fillStyle = '#FFFFFF';
+    drawRoundedRect(ctx, 270, 710, 260, 260, 16);
+    ctx.fill();
+
+    // Generate & Draw crisp QR Code onto Canvas
+    const qrPayload = JSON.stringify({
+      id: currentTicketData.ticketId,
+      name: currentTicketData.fullname,
+      jurusan: currentTicketData.jurusan,
+      campus: currentTicketData.campus
+    });
+    await drawQrCodeOnCanvas(ctx, qrPayload, 290, 730, 220);
 
     // Ticket Code ID
     ctx.textAlign = 'center';
@@ -373,16 +447,14 @@ function initTicketExporter() {
     ctx.fillText('Selamat bergabung di komunitas Standing Firm!', 400, 1115);
 
     // Export to Image & Trigger Download
-    setTimeout(() => {
-      const imageURL = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = `Tiket-StandingFirm-${currentTicketData.ticketId}.png`;
-      link.href = imageURL;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      showToast('Tiket berhasil didownload!', '✅');
-    }, 200);
+    const imageURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `Tiket-StandingFirm-${currentTicketData.ticketId}.png`;
+    link.href = imageURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('Tiket berhasil didownload!', '✅');
   });
 }
 
