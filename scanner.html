@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panitia Scanner & Check-In | STANDING FIRM Petra</title>
   
   <!-- Bootstrap Icons & Stylesheet -->
@@ -12,116 +12,125 @@
   <!-- HTML5-QRCode Library for Web Camera Scanning -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
-<body style="background-color: var(--color-green);">
+<body class="scanner-page-body">
 
   <div class="bg-ambient-layer"></div>
   <canvas id="particle-canvas"></canvas>
 
-  <div class="app-wrapper">
+  <div class="scanner-wide-wrapper">
     
-    <!-- Top Navigation -->
-    <header class="top-nav" style="max-width: 600px;">
+    <!-- Top Navigation Bar -->
+    <header class="scanner-top-nav">
       <a href="index.html" class="nav-brand">
         <span class="nav-brand-icon"><i class="bi bi-arrow-left"></i></span>
         <span>KEMBALI KE FORM</span>
       </a>
       <div class="nav-actions">
-        <span class="badge-pill" style="margin-bottom: 0; padding: 4px 12px; font-size: 0.68rem;">
+        <span class="badge-pill" style="margin-bottom: 0; padding: 6px 14px; font-size: 0.72rem;">
           <span class="badge-dot" style="background: #4caf50;"></span>
-          <span><i class="bi bi-qr-code-scan"></i> D-DAY SCANNER</span>
+          <span><i class="bi bi-qr-code-scan"></i> D-DAY SCANNER DESK</span>
         </span>
       </div>
     </header>
 
-    <main class="main-content" style="max-width: 600px;">
+    <!-- Header & Summary Title -->
+    <div class="scanner-header-block">
+      <h1 class="scanner-main-title">
+        CHECK-IN SCANNER DASHBOARD
+      </h1>
+      <p class="scanner-main-subtitle">
+        Arahkan kamera ke QR Code tiket peserta atau gunakan pencarian manual di sebelah kanan untuk memverifikasi kehadiran.
+      </p>
+    </div>
+
+    <!-- Live Real-Time Statistics Counter Cards -->
+    <div class="stats-grid scanner-stats-wide">
+      <div class="stat-card">
+        <p class="stat-number" id="stat-total">0</p>
+        <p class="stat-label">Total Terdaftar</p>
+      </div>
+      <div class="stat-card stat-card-success">
+        <p class="stat-number" id="stat-checked" style="color: #4caf50;">0</p>
+        <p class="stat-label" style="color: #4caf50;">Sudah Hadir</p>
+      </div>
+      <div class="stat-card stat-card-warning">
+        <p class="stat-number" id="stat-pending" style="color: #ff9800;">0</p>
+        <p class="stat-label" style="color: #ff9800;">Belum Hadir</p>
+      </div>
+    </div>
+
+    <!-- Main 2-Column Split Workspace (Camera Left, Table Right) -->
+    <div class="scanner-dashboard-layout">
       
-      <!-- Admin / Scanner Container -->
-      <div class="admin-view-container">
-        
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h2 style="font-family: var(--font-display); font-size: 1.6rem; color: var(--color-cream); letter-spacing: 2px;">
-            CHECK-IN SCANNER
-          </h2>
-          <p style="font-size: 0.8rem; color: var(--color-cream-dim);">
-            Arahkan kamera ke QR Code peserta untuk memverifikasi kehadiran.
-          </p>
+      <!-- LEFT COLUMN: Camera Scanner & Live Feedback -->
+      <section class="scanner-panel scanner-panel-left">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="bi bi-camera-video-fill"></i> Live QR Camera</h2>
+          <span class="panel-badge">Web & USB Cam</span>
         </div>
 
-        <!-- Live Real-Time Statistics Counter -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <p class="stat-number" id="stat-total">0</p>
-            <p class="stat-label">Total Terdaftar</p>
-          </div>
-          <div class="stat-card" style="border-color: rgba(76, 175, 80, 0.4);">
-            <p class="stat-number" id="stat-checked" style="color: #4caf50;">0</p>
-            <p class="stat-label" style="color: #4caf50;">Sudah Hadir</p>
-          </div>
-          <div class="stat-card" style="border-color: rgba(255, 152, 0, 0.4);">
-            <p class="stat-number" id="stat-pending" style="color: #ff9800;">0</p>
-            <p class="stat-label" style="color: #ff9800;">Belum Hadir</p>
-          </div>
-        </div>
-
-        <!-- Camera Scanner Feed Box -->
+        <!-- Camera Scanner Feed Box (Enlarged & Spacious) -->
         <div class="scanner-camera-box" id="scanner-wrapper">
           <div id="reader" style="width: 100%; height: 100%;"></div>
           <div class="scanner-laser-line"></div>
         </div>
 
         <!-- Scanner Controls -->
-        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-          <button type="button" id="start-scan-btn" class="nav-link-btn" style="background: var(--color-navy); border-color: var(--color-cream-dim); padding: 8px 18px; font-size: 0.82rem; cursor: pointer;">
+        <div class="scanner-btn-group">
+          <button type="button" id="start-scan-btn" class="btn-scanner-action btn-start-camera">
             <i class="bi bi-camera-fill"></i> Mulai Kamera
           </button>
-          <button type="button" id="stop-scan-btn" class="nav-link-btn" style="padding: 8px 18px; font-size: 0.82rem; cursor: pointer; display: none;">
+          <button type="button" id="stop-scan-btn" class="btn-scanner-action btn-stop-camera" style="display: none;">
             <i class="bi bi-stop-circle-fill"></i> Hentikan Kamera
           </button>
         </div>
 
         <!-- Scan Result Banner Pop-up / Notification -->
-        <div id="scan-result-card" style="display: none; padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; text-align: center; animation: popIn 0.3s ease;">
-          <h3 id="scan-result-title" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 4px;"></h3>
-          <p id="scan-result-details" style="font-size: 0.88rem;"></p>
-          <p id="scan-result-time" style="font-size: 0.75rem; opacity: 0.8; margin-top: 4px;"></p>
+        <div id="scan-result-card" class="scan-result-banner" style="display: none;">
+          <h3 id="scan-result-title" class="result-title"></h3>
+          <p id="scan-result-details" class="result-details"></p>
+          <p id="scan-result-time" class="result-time"></p>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Search Bar & Live Attendee Table -->
+      <section class="scanner-panel scanner-panel-right">
+        <div class="panel-header">
+          <h2 class="panel-title"><i class="bi bi-people-fill"></i> Data Peserta & Manual Check-In</h2>
+          <span class="panel-badge" style="background: rgba(76, 175, 80, 0.15); color: #81c784;">Real-Time Sync</span>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid rgba(244, 239, 230, 0.15); margin: 24px 0 20px;">
-
-        <!-- Manual Check-In & Search Bar -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--color-cream); margin-bottom: 6px; letter-spacing: 1px;">
-            CARI PESERTA / MANUAL CHECK-IN
-          </label>
-          <div style="display: flex; gap: 8px;">
+        <!-- Search Input Bar & Export Button -->
+        <div class="scanner-search-row">
+          <div class="search-input-wrapper">
+            <i class="bi bi-search search-icon"></i>
             <input 
               type="text" 
               id="manual-search-input" 
-              placeholder="Ketik Nama, Ticket ID, atau No WA..." 
-              style="flex: 1; background: rgba(244, 239, 230, 0.1); border: 1px solid rgba(244, 239, 230, 0.25); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--color-cream); font-family: var(--font-sans); font-size: 0.88rem; outline: none;"
+              placeholder="Cari Nama, Ticket ID, Jurusan, atau No WA..." 
+              class="search-text-input"
             >
-            <button 
-              type="button" 
-              id="export-csv-btn" 
-              class="nav-link-btn" 
-              style="padding: 10px 14px; background: var(--color-cream); color: var(--color-green); font-size: 0.8rem; cursor: pointer;"
-              title="Download Rekap Kehadiran"
-            >
-              <i class="bi bi-file-earmark-spreadsheet-fill"></i> Export CSV
-            </button>
           </div>
+          <button 
+            type="button" 
+            id="export-csv-btn" 
+            class="btn-export-action" 
+            title="Download Rekap Kehadiran Excel/CSV"
+          >
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> Export CSV
+          </button>
         </div>
 
-        <!-- Table of Registered Guests -->
-        <div style="overflow-x: auto; max-height: 320px; border: 1px solid rgba(244, 239, 230, 0.15); border-radius: var(--radius-sm);">
+        <!-- Large Scrollable Table of Registered Guests -->
+        <div class="table-scroll-container">
           <table class="attendee-list-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nama Peserta</th>
-                <th>Prodi</th>
-                <th>Status</th>
-                <th>Aksi</th>
+                <th style="width: 14%;">ID</th>
+                <th style="width: 30%;">Nama Peserta</th>
+                <th style="width: 30%;">Jurusan / Kampus</th>
+                <th style="width: 13%;">Status</th>
+                <th style="width: 13%; text-align: center;">Aksi</th>
               </tr>
             </thead>
             <tbody id="attendee-table-body">
@@ -129,10 +138,10 @@
             </tbody>
           </table>
         </div>
+      </section>
 
-      </div>
+    </div>
 
-    </main>
   </div>
 
   <!-- Toast Alert -->

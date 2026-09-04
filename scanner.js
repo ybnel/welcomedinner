@@ -155,29 +155,30 @@ function renderAttendeeTable(list, filterQuery = '') {
 
   tbody.innerHTML = filtered.map(a => `
     <tr>
-      <td style="font-family: monospace; font-weight: 700; color: var(--color-cream);">${a.ticketId}</td>
+      <td style="font-family: monospace; font-weight: 700; color: var(--color-cream); font-size: 0.9rem;">${a.ticketId}</td>
       <td>
-        <strong style="color: var(--color-cream);">${escapeHtml(a.fullname)}</strong>
-        <div style="font-size: 0.72rem; color: var(--color-cream-dim);">
-          📸 ${escapeHtml(a.instagram || '-')} • 📱 ${escapeHtml(a.whatsapp || '')}
+        <strong style="color: var(--color-cream); font-size: 0.95rem;">${escapeHtml(a.fullname)}</strong>
+        <div style="font-size: 0.76rem; color: var(--color-cream-dim); margin-top: 2px;">
+          <i class="bi bi-instagram"></i> ${escapeHtml(a.instagram || '-')} • <i class="bi bi-whatsapp"></i> ${escapeHtml(a.whatsapp || '-')}
         </div>
       </td>
-      <td style="font-size: 0.8rem; color: var(--color-cream-dim);">
-        <div>${escapeHtml(a.jurusan || '-')}</div>
-        <div style="font-size: 0.7rem; opacity: 0.8;">${escapeHtml(a.campus || 'Petra')} • Angkatan ${escapeHtml(a.year || '-')}</div>
+      <td style="font-size: 0.85rem; color: var(--color-cream);">
+        <div style="font-weight: 600;">${escapeHtml(a.jurusan || '-')}</div>
+        <div style="font-size: 0.74rem; color: var(--color-cream-dim);">${escapeHtml(a.campus || 'Petra')} • Angkatan ${escapeHtml(a.year || '-')}</div>
       </td>
       <td>
         <span class="status-badge ${a.checkedIn ? 'checked-in' : 'pending'}">
-          ${a.checkedIn ? 'Hadir ✅' : 'Belum'}
+          ${a.checkedIn ? '<i class="bi bi-check-circle-fill"></i> Hadir' : '<i class="bi bi-clock"></i> Belum'}
         </span>
+        ${a.checkedInAt ? `<div style="font-size: 0.68rem; color: var(--color-cream-dim); margin-top: 3px;">${a.checkedInAt}</div>` : ''}
       </td>
-      <td>
+      <td style="text-align: center;">
         <button 
           type="button" 
           onclick="toggleCheckIn('${a.ticketId}')" 
-          style="background: ${a.checkedIn ? 'rgba(211, 47, 47, 0.2)' : 'rgba(76, 175, 80, 0.3)'}; border: 1px solid ${a.checkedIn ? '#d32f2f' : '#4caf50'}; color: var(--color-cream); border-radius: 4px; padding: 4px 8px; font-size: 0.72rem; cursor: pointer;"
+          style="background: ${a.checkedIn ? 'rgba(211, 47, 47, 0.25)' : 'rgba(76, 175, 80, 0.35)'}; border: 1px solid ${a.checkedIn ? '#ef5350' : '#4caf50'}; color: var(--color-cream); border-radius: var(--radius-pill); padding: 6px 12px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease;"
         >
-          ${a.checkedIn ? 'Batalkan' : 'Check-In'}
+          ${a.checkedIn ? '<i class="bi bi-x-circle"></i> Batal' : '<i class="bi bi-check-lg"></i> Check-In'}
         </button>
       </td>
     </tr>
