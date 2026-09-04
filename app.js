@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFormHandler();
   initTicketExporter();
   initLightbox();
+  initSecretScannerShortcuts();
 });
 
 /* ================= 1. AMBIENT PARTICLE BACKGROUND ================= */
@@ -443,13 +444,34 @@ function showToast(message, icon = '✅') {
   }, 3500);
 }
 
-function triggerConfetti() {
-  if (typeof confetti === 'function') {
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#234A16', '#F4EFE6', '#16222F', '#D4AF37']
+/* ================= 8. SECRET SCANNER SHORTCUTS (FOR COMMITTEE ONLY) ================= */
+function initSecretScannerShortcuts() {
+  // 1. Secret Gesture: Klik 3x berturut-turut pada badge event
+  const badge = document.querySelector('.badge-pill');
+  if (badge) {
+    let clickCount = 0;
+    let clickTimer = null;
+    badge.style.cursor = 'pointer';
+
+    badge.addEventListener('click', () => {
+      clickCount++;
+      clearTimeout(clickTimer);
+      if (clickCount >= 3) {
+        clickCount = 0;
+        window.location.href = 'scanner.html';
+      }
+      clickTimer = setTimeout(() => {
+        clickCount = 0;
+      }, 1200);
     });
   }
+
+  // 2. Secret Keyboard Shortcut (Alt + S atau Ctrl + Shift + S)
+  window.addEventListener('keydown', (e) => {
+    if ((e.altKey && (e.key === 's' || e.key === 'S')) ||
+        (e.ctrlKey && e.shiftKey && (e.key === 's' || e.key === 'S'))) {
+      e.preventDefault();
+      window.location.href = 'scanner.html';
+    }
+  });
 }
