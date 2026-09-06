@@ -153,13 +153,32 @@ function renderAttendeeTable(list, filterQuery = '') {
     return;
   }
 
-  tbody.innerHTML = filtered.map(a => `
+function formatWhatsAppLink(phone) {
+  if (!phone) return '#';
+  if (String(phone).startsWith('http')) return phone;
+  let cleaned = String(phone).replace(/\D/g, '');
+  if (cleaned.startsWith('0')) {
+    cleaned = '62' + cleaned.slice(1);
+  } else if (cleaned.startsWith('8')) {
+    cleaned = '62' + cleaned;
+  }
+  return cleaned ? `https://wa.me/${cleaned}` : '#';
+}
+
+  tbody.innerHTML = filtered.map(a => {
+    const waUrl = formatWhatsAppLink(a.whatsapp || a.whatsappRaw);
+    const igHandle = (a.instagram || '').replace(/^@/, '').trim();
+    const igUrl = igHandle ? `https://instagram.com/${igHandle}` : '#';
+
+    return `
     <tr>
       <td style="font-family: monospace; font-weight: 700; color: var(--color-cream); font-size: 0.9rem;">${a.ticketId}</td>
       <td>
         <strong style="color: var(--color-cream); font-size: 0.95rem;">${escapeHtml(a.fullname)}</strong>
-        <div style="font-size: 0.76rem; color: var(--color-cream-dim); margin-top: 2px;">
-          <i class="bi bi-instagram"></i> ${escapeHtml(a.instagram || '-')} • <i class="bi bi-whatsapp"></i> ${escapeHtml(a.whatsapp || '-')}
+        <div style="font-size: 0.76rem; color: var(--color-cream-dim); margin-top: 4px; display: flex; gap: 8px;">
+          ${igHandle ? `<a href="${igUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--color-cream); text-decoration: none;" title="Buka Instagram"><i class="bi bi-instagram"></i> @${escapeHtml(igHandle)}</a>` : '<span>-</span>'}
+          <span>•</span>
+          ${a.whatsapp ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="color: #81c784; text-decoration: none; font-weight: 600;" title="Klik untuk Chat via WhatsApp"><i class="bi bi-whatsapp"></i> Chat WA ↗</a>` : '<span>-</span>'}
         </div>
       </td>
       <td style="font-size: 0.85rem; color: var(--color-cream);">
@@ -182,7 +201,7 @@ function renderAttendeeTable(list, filterQuery = '') {
         </button>
       </td>
     </tr>
-  `).join('');
+  `;}).join('');
 }
 
 function formatDateTime(date = new Date()) {

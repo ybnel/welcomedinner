@@ -128,13 +128,14 @@ function initFormHandler() {
     submitBtn.innerHTML = '<span>Menghubungkan ke Cloud...</span> <i class="bi bi-arrow-repeat"></i>';
 
     const formData = new FormData(form);
-    const fullname = formData.get('fullname').trim();
-    const jurusan = formData.get('jurusan').trim();
-    const campus = formData.get('campus').trim();
-    const year = formData.get('year').trim();
-    const instagram = formData.get('instagram').trim();
-    const whatsapp = formData.get('whatsapp').trim();
-    const confirmation = formData.get('confirmation');
+    const fullname = formData.get('fullname')?.trim() || '';
+    const jurusan = formData.get('jurusan')?.trim() || '';
+    const campus = formData.get('campus')?.trim() || '';
+    const year = formData.get('year')?.trim() || '';
+    const instagram = formData.get('instagram')?.trim() || '';
+    const rawWhatsapp = formData.get('whatsapp')?.trim() || '';
+    const whatsappLink = formatWhatsAppLink(rawWhatsapp);
+    const confirmation = formData.get('confirmation') || 'Pasti datang dong! 🔥';
 
     // Generate Unique Ticket Code (e.g. SG-PTR-104)
     let existingList = [];
@@ -155,7 +156,8 @@ function initFormHandler() {
       campus,
       year,
       instagram,
-      whatsapp,
+      whatsapp: whatsappLink,
+      whatsappRaw: rawWhatsapp,
       confirmation,
       registeredAt: timestamp,
       checkedIn: false,
@@ -174,9 +176,30 @@ function initFormHandler() {
       renderTicketModal(attendeeRecord);
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<span>RSVP & REGISTER NOW</span> <i class="bi bi-ticket-perforated-fill"></i>';
-      showToast('Pendaftaran Berhasil! Data tersimpan di Cloud Firestore.', '🎉');
+      showToast('Pendaftaran Berhasil! Data tersimpan di Cloud Firestore & Sheets.', '🎉');
     }, 400);
   });
+}
+
+function triggerConfetti() {
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+}
+
+function formatWhatsAppLink(phone) {
+  if (!phone) return '';
+  let cleaned = String(phone).replace(/\D/g, '');
+  if (cleaned.startsWith('0')) {
+    cleaned = '62' + cleaned.slice(1);
+  } else if (cleaned.startsWith('8')) {
+    cleaned = '62' + cleaned;
+  }
+  return cleaned ? `https://wa.me/${cleaned}` : phone;
 }
 
 function formatDateTime(date = new Date()) {
