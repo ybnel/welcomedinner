@@ -132,7 +132,10 @@ function initFormHandler() {
     const jurusan = formData.get('jurusan')?.trim() || '';
     const campus = formData.get('campus')?.trim() || '';
     const year = formData.get('year')?.trim() || '';
-    const instagram = formData.get('instagram')?.trim() || '';
+    let instagram = formData.get('instagram')?.trim() || '';
+    if (instagram && !instagram.startsWith('@')) {
+      instagram = '@' + instagram;
+    }
     const rawWhatsapp = formData.get('whatsapp')?.trim() || '';
     const whatsappLink = formatWhatsAppLink(rawWhatsapp);
     const source = formData.get('source') || 'Instagram (@stayatzion / Explore)';
