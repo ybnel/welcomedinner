@@ -135,6 +135,7 @@ function initFormHandler() {
     const instagram = formData.get('instagram')?.trim() || '';
     const rawWhatsapp = formData.get('whatsapp')?.trim() || '';
     const whatsappLink = formatWhatsAppLink(rawWhatsapp);
+    const source = formData.get('source') || 'Instagram (@stayatzion / Explore)';
     const confirmation = formData.get('confirmation') || 'Pasti datang dong! 🔥';
 
     // Generate Unique Ticket Code (e.g. SG-PTR-104)
@@ -158,6 +159,8 @@ function initFormHandler() {
       instagram,
       whatsapp: whatsappLink,
       whatsappRaw: rawWhatsapp,
+      source,
+      infoSource: source,
       confirmation,
       registeredAt: timestamp,
       checkedIn: false,

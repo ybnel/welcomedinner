@@ -139,7 +139,9 @@ function renderAttendeeTable(list, filterQuery = '') {
     (a.whatsapp && a.whatsapp.includes(query)) ||
     (a.jurusan && a.jurusan.toLowerCase().includes(query)) ||
     (a.instagram && a.instagram.toLowerCase().includes(query)) ||
-    (a.campus && a.campus.toLowerCase().includes(query))
+    (a.campus && a.campus.toLowerCase().includes(query)) ||
+    (a.source && a.source.toLowerCase().includes(query)) ||
+    (a.infoSource && a.infoSource.toLowerCase().includes(query))
   );
 
   if (filtered.length === 0) {
@@ -169,13 +171,14 @@ function formatWhatsAppLink(phone) {
     const waUrl = formatWhatsAppLink(a.whatsapp || a.whatsappRaw);
     const igHandle = (a.instagram || '').replace(/^@/, '').trim();
     const igUrl = igHandle ? `https://instagram.com/${igHandle}` : '#';
+    const sourceInfo = a.source || a.infoSource || '';
 
     return `
     <tr>
       <td style="font-family: monospace; font-weight: 700; color: var(--color-cream); font-size: 0.9rem;">${a.ticketId}</td>
       <td>
         <strong style="color: var(--color-cream); font-size: 0.95rem;">${escapeHtml(a.fullname)}</strong>
-        <div style="font-size: 0.76rem; color: var(--color-cream-dim); margin-top: 4px; display: flex; gap: 8px;">
+        <div style="font-size: 0.76rem; color: var(--color-cream-dim); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 8px;">
           ${igHandle ? `<a href="${igUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--color-cream); text-decoration: none;" title="Buka Instagram"><i class="bi bi-instagram"></i> @${escapeHtml(igHandle)}</a>` : '<span>-</span>'}
           <span>•</span>
           ${a.whatsapp ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="color: #81c784; text-decoration: none; font-weight: 600;" title="Klik untuk Chat via WhatsApp"><i class="bi bi-whatsapp"></i> Chat WA ↗</a>` : '<span>-</span>'}
@@ -184,6 +187,7 @@ function formatWhatsAppLink(phone) {
       <td style="font-size: 0.85rem; color: var(--color-cream);">
         <div style="font-weight: 600;">${escapeHtml(a.jurusan || '-')}</div>
         <div style="font-size: 0.74rem; color: var(--color-cream-dim);">${escapeHtml(a.campus || 'Petra')} • Angkatan ${escapeHtml(a.year || '-')}</div>
+        ${sourceInfo ? `<div style="font-size: 0.70rem; color: #a5d6a7; margin-top: 3px;"><i class="bi bi-info-circle"></i> Info: ${escapeHtml(sourceInfo)}</div>` : ''}
       </td>
       <td>
         <span class="status-badge ${a.checkedIn ? 'checked-in' : 'pending'}">
@@ -419,6 +423,7 @@ function initExportCSV() {
       'Tahun Masuk', 
       'Instagram', 
       'No Telepon/WA', 
+      'Sumber Info',
       'Konfirmasi Hadir 11 Sept', 
       'Waktu Daftar',
       'Status Kehadiran', 
@@ -432,6 +437,7 @@ function initExportCSV() {
       `"${a.year || ''}"`,
       `"${a.instagram || ''}"`,
       `"${a.whatsapp || ''}"`,
+      `"${a.source || a.infoSource || ''}"`,
       `"${a.confirmation || ''}"`,
       `"${a.registeredAt || '-'}"`,
       `"${a.checkedIn ? 'Hadir' : 'Belum Hadir'}"`,
