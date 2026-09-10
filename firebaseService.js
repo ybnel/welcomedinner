@@ -31,6 +31,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const ATTENDEES_COLLECTION = "attendees";
+const MANUAL_ATTENDEES_COLLECTION = "manual_attendees";
 
 const GOOGLE_SHEETS_URL = import.meta.env?.VITE_GOOGLE_SHEETS_URL || "https://script.google.com/macros/s/AKfycbwA1d0CQEcLSIaTuGK2K5LIFaSvw11ffjR-1V2y4Btb9XfCsoVv35wlJqjNOMMVYec/exec";
 
@@ -74,7 +75,36 @@ export async function saveAttendeeToFirebase(attendee) {
 }
 
 /**
- * Ambil semua data pendaftar dari Firestore
+ * Simpan data pendaftar MANUAL Hari-H ke Firestore & Google Sheets
+ */
+export async function saveManualAttendeeToFirebase(attendee) {
+  try {
+    // 1. Simpan ke Firestore manual_attendees
+    const docRef = doc(db, MANUAL_ATTENDEES_COLLECTION, attendee.ticketId);
+    await setDoc(docRef, attendee, { merge: true });
+    console.log("✅ Berhasil disimpan ke Firestore (manual_attendees):", attendee.ticketId);
+
+    // 2. Sync ke Google Sheets (Data Manual)
+    syncToGoogleSheets({
+      ...attendee,
+      isManualOTS: true,
+      targetSheet: "Data Manual"
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("❌ Gagal simpan manual ke Firebase:", error);
+    syncToGoogleSheets({
+      ...attendee,
+      isManualOTS: true,
+      targetSheet: "Data Manual"
+    });
+    return { success: false, error };
+  }
+}
+
+/**
+ * Ambil semua data pendaftar online dari Firestore
  */
 export async function getAttendeesFromFirebase() {
   try {
@@ -88,6 +118,25 @@ export async function getAttendeesFromFirebase() {
   } catch (error) {
     console.warn("⚠️ Gagal mengambil dari Firebase, fallback ke LocalStorage:", error);
     const local = localStorage.getItem("solid_ground_attendees");
+    return local ? JSON.parse(local) : [];
+  }
+}
+
+/**
+ * Ambil semua data pendaftar manual Hari-H dari Firestore
+ */
+export async function getManualAttendeesFromFirebase() {
+  try {
+    const q = query(collection(db, MANUAL_ATTENDEES_COLLECTION), orderBy("registeredAt", "asc"));
+    const snapshot = await getDocs(q);
+    const list = [];
+    snapshot.forEach(docSnap => {
+      list.push(docSnap.data());
+    });
+    return list;
+  } catch (error) {
+    console.warn("⚠️ Gagal mengambil manual dari Firebase, fallback ke LocalStorage:", error);
+    const local = localStorage.getItem("solid_ground_manual_attendees");
     return local ? JSON.parse(local) : [];
   }
 }
@@ -120,7 +169,7 @@ export async function updateCheckInFirebase(ticketId, checkedIn, checkedInAt) {
 }
 
 /**
- * Real-time listener: Menangkap data pendaftar & status scan langsung di semua HP panitia
+ * Real-time listener: Menangkap data pendaftar online & status scan langsung di semua HP panitia
  */
 export function subscribeAttendeesFromFirebase(onUpdateCallback) {
   try {
@@ -140,6 +189,30 @@ export function subscribeAttendeesFromFirebase(onUpdateCallback) {
     });
   } catch (err) {
     console.error("Gagal subscribe ke Firestore:", err);
+    return null;
+  }
+}
+
+/**
+ * Real-time listener: Menangkap pendaftar manual Hari-H di collection manual_attendees
+ */
+export function subscribeManualAttendeesFromFirebase(onUpdateCallback) {
+  try {
+    const q = query(collection(db, MANUAL_ATTENDEES_COLLECTION), orderBy("registeredAt", "asc"));
+    return onSnapshot(q, (snapshot) => {
+      const list = [];
+      snapshot.forEach(docSnap => {
+        list.push(docSnap.data());
+      });
+      localStorage.setItem("solid_ground_manual_attendees", JSON.stringify(list));
+      if (typeof onUpdateCallback === "function") {
+        onUpdateCallback(list);
+      }
+    }, (error) => {
+      console.warn("Real-time manual snapshot error:", error);
+    });
+  } catch (err) {
+    console.error("Gagal subscribe manual ke Firestore:", err);
     return null;
   }
 }

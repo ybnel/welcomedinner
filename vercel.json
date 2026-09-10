@@ -4,6 +4,10 @@
     {
       "source": "/scanner",
       "destination": "/scanner.html"
+    },
+    {
+      "source": "/manual",
+      "destination": "/manual.html"
     }
   ]
 }

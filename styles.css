@@ -1329,3 +1329,150 @@ html, body {
     padding: 24px 18px;
   }
 }
+
+/* ================= SECTION 5: MANUAL OTS REGISTRATION PAGE ================= */
+.manual-page-body {
+  background-color: var(--color-green);
+  color: var(--color-cream);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.manual-app-wrapper {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.manual-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.manual-main-content {
+  width: 100%;
+}
+
+.manual-form-card {
+  background-color: var(--color-cream);
+  color: var(--color-navy);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(244, 239, 230, 0.4);
+}
+
+.manual-form-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.manual-form-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  margin-bottom: 6px;
+}
+
+.manual-form-subtitle {
+  font-size: 0.84rem;
+  color: var(--color-navy-dim);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.ots-counter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(35, 74, 22, 0.08);
+  border: 1px solid rgba(35, 74, 22, 0.2);
+  color: var(--color-green);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Category Segmented Radio Buttons */
+.category-toggle-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: rgba(22, 34, 47, 0.06);
+  padding: 5px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgba(22, 34, 47, 0.15);
+}
+
+.category-radio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-navy-dim);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  user-select: none;
+}
+
+.category-radio-btn input {
+  display: none;
+}
+
+.category-radio-btn:hover {
+  color: var(--color-navy);
+}
+
+.category-radio-btn.active {
+  background-color: var(--color-green);
+  color: var(--color-cream);
+  box-shadow: 0 2px 8px rgba(35, 74, 22, 0.3);
+}
+
+.umum-notice-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(35, 74, 22, 0.08);
+  border: 1px solid rgba(35, 74, 22, 0.2);
+  color: var(--color-green);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+.last-added-card {
+  margin-top: 24px;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1.5px solid #81c784;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.last-added-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2e7d32;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+}
+

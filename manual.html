@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Registrasi Manual Hari-H (OTS) | STANDING FIRM Petra</title>
+  <meta name="description" content="Form pendaftaran cepat di meja registrasi Hari-H untuk peserta On-The-Spot (Walk-In) Standing Firm Petra.">
+  
+  <!-- Favicon / Web App Icon -->
+  <link rel="icon" type="image/png" href="assets/iconsf.png">
+  <link rel="apple-touch-icon" href="assets/iconsf.png">
+  
+  <!-- CSS Stylesheet & Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="manual-page-body">
+
+  <!-- Ambient Light Layer & Particle Canvas -->
+  <div class="bg-ambient-layer"></div>
+  <canvas id="particle-canvas"></canvas>
+
+  <div class="manual-app-wrapper">
+    
+    <!-- Top Navigation Bar -->
+    <header class="manual-top-nav">
+      <a href="scanner.html" class="nav-brand">
+        <span class="nav-brand-icon"><i class="bi bi-arrow-left"></i></span>
+        <span>SCANNER DESK</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="nav-link-btn" title="Buka Form Publik">
+          <i class="bi bi-house"></i> Home
+        </a>
+      </div>
+    </header>
+
+    <main class="manual-main-content">
+      
+      <!-- Direct Form Card (No Landing Page) -->
+      <section class="manual-form-card">
+        
+        <div class="manual-form-header">
+          <p class="hero-subtitle" style="color: var(--color-navy-dim); margin-bottom: 4px; font-size: 0.75rem;">Young Christian People Fellowship</p>
+          <h1 class="manual-form-title">STANDING FIRM</h1>
+          <p class="manual-form-subtitle" style="margin-bottom: 0;">
+            Silakan lengkapi data di bawah ini untuk pencatatan kehadiran.
+          </p>
+        </div>
+
+        <form id="manual-ots-form" class="manual-ots-form">
+          
+          <!-- 1. Nama Lengkap -->
+          <div class="form-group">
+            <label class="form-label" for="input-manual-fullname">
+              Nama Lengkap <span class="req">*</span>
+            </label>
+            <div class="input-container">
+              <input 
+                type="text" 
+                id="input-manual-fullname" 
+                name="fullname" 
+                class="form-input" 
+                placeholder="Contoh: Stefani Grace" 
+                required
+                autocomplete="off"
+                autofocus
+              >
+              <span class="input-icon-right"><i class="bi bi-person"></i></span>
+            </div>
+          </div>
+
+          <!-- 2. Kategori Peserta (Segmented Radio) -->
+          <div class="form-group">
+            <label class="form-label">
+              Kategori Peserta <span class="req">*</span>
+            </label>
+            <div class="category-toggle-group">
+              <label class="category-radio-btn active" id="label-cat-mahasiswa">
+                <input type="radio" name="category" value="Mahasiswa" checked>
+                <i class="bi bi-mortarboard-fill"></i>
+                <span>Mahasiswa</span>
+              </label>
+              <label class="category-radio-btn" id="label-cat-umum">
+                <input type="radio" name="category" value="Umum">
+                <i class="bi bi-people-fill"></i>
+                <span>Umum</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. Dynamic Student Fields Group -->
+          <div id="student-fields-group">
+            
+            <!-- Kuliah Dimana -->
+            <div class="form-group">
+              <label class="form-label" for="input-manual-campus">
+                Kuliah Dimana <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-manual-campus" 
+                  name="campus" 
+                  class="form-input" 
+                  placeholder="Contoh: Universitas Kristen Petra" 
+                  required
+                >
+                <span class="input-icon-right"><i class="bi bi-bank"></i></span>
+              </div>
+            </div>
+
+            <!-- Jurusan / Prodi -->
+            <div class="form-group">
+              <label class="form-label" for="input-manual-jurusan">
+                Jurusan <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="text" 
+                  id="input-manual-jurusan" 
+                  name="jurusan" 
+                  class="form-input" 
+                  placeholder="Contoh: Informatika / DKV / Manajemen Bisnis" 
+                  required
+                >
+                <span class="input-icon-right"><i class="bi bi-book"></i></span>
+              </div>
+            </div>
+
+            <!-- No WhatsApp -->
+            <div class="form-group">
+              <label class="form-label" for="input-manual-whatsapp">
+                Nomer Telepon (WhatsApp) <span class="req">*</span>
+              </label>
+              <div class="input-container">
+                <input 
+                  type="tel" 
+                  id="input-manual-whatsapp" 
+                  name="whatsapp" 
+                  class="form-input" 
+                  placeholder="081234567890" 
+                  required
+                >
+                <span class="input-icon-right"><i class="bi bi-whatsapp"></i></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit-rsvp" id="submit-manual-btn" style="margin-top: 10px;">
+            <span>SIMPAN & CHECK-IN HADIR</span>
+            <i class="bi bi-check-circle-fill" style="font-size: 1.1rem;"></i>
+          </button>
+        </form>
+
+        <!-- Live Last Added Success Card -->
+        <div id="last-added-card" class="last-added-card" style="display: none;">
+          <div class="last-added-header">
+            <i class="bi bi-check-circle-fill" style="color: #4caf50; font-size: 1.3rem;"></i>
+            <strong>Terdaftar & Checked-In!</strong>
+          </div>
+          <div class="last-added-body" id="last-added-info">
+            <!-- Dynamic info inserted by JS -->
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Toast Alert -->
+  <div class="toast-alert" id="toast-alert">
+    <span id="toast-icon">✅</span>
+    <span id="toast-message">Pesan notifikasi</span>
+  </div>
+
+  <!-- Logic Script -->
+  <script type="module" src="manual.js"></script>
+</body>
+</html>
