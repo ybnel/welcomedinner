@@ -1343,18 +1343,13 @@ html, body {
   width: 100%;
   max-width: 580px;
   margin: 0 auto;
-  padding: 20px 16px 40px;
+  padding: 32px 16px 40px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
   position: relative;
   z-index: 2;
-}
-
-.manual-top-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
 }
 
 .manual-main-content {
