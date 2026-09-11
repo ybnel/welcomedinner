@@ -1443,36 +1443,3 @@ html, body {
   box-shadow: 0 2px 8px rgba(35, 74, 22, 0.3);
 }
 
-.umum-notice-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(35, 74, 22, 0.08);
-  border: 1px solid rgba(35, 74, 22, 0.2);
-  color: var(--color-green);
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 0.82rem;
-  line-height: 1.4;
-  margin-top: 6px;
-  margin-bottom: 16px;
-}
-
-.last-added-card {
-  margin-top: 24px;
-  background: rgba(76, 175, 80, 0.1);
-  border: 1.5px solid #81c784;
-  border-radius: var(--radius-md);
-  padding: 16px;
-  animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.last-added-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #2e7d32;
-  font-size: 0.92rem;
-  margin-bottom: 6px;
-}
-

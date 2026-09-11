@@ -153,8 +153,6 @@ function initCategoryToggle() {
 function initManualFormHandler() {
   const form = document.getElementById('manual-ots-form');
   const submitBtn = document.getElementById('submit-manual-btn');
-  const lastAddedCard = document.getElementById('last-added-card');
-  const lastAddedInfo = document.getElementById('last-added-info');
 
   if (!form) return;
 
@@ -215,19 +213,8 @@ function initManualFormHandler() {
     playSound('success');
     triggerConfetti();
 
-    // 4. Update UI: Last Added Card & Toast
-    lastAddedInfo.innerHTML = `
-      <div style="font-size: 1.05rem; font-weight: 700; color: #16222F;">${escapeHtml(fullname)}</div>
-      <div style="font-size: 0.85rem; color: #234A16; font-weight: 600; margin-top: 2px;">
-        ${escapeHtml(category)} ${category === 'Mahasiswa' ? `• ${escapeHtml(jurusan)} (${escapeHtml(campus)})` : ''}
-      </div>
-      <div style="font-size: 0.76rem; color: #666; margin-top: 4px;">
-        Kode: <strong>${ticketId}</strong> • Pukul: ${timestamp.split(' ')[1] || timestamp} WIB
-      </div>
-    `;
-    lastAddedCard.style.display = 'block';
-
-    showToast(`Berhasil! ${fullname} tercatat Hadir.`, '🎉');
+    // 4. Toast Alert (Popup sementara)
+    showToast(`Pendaftaran Berhasil! ${fullname} tercatat Hadir.`, '🎉');
 
     // 5. Reset form for next person in line
     form.reset();
