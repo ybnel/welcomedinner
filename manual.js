@@ -118,33 +118,37 @@ function initCategoryToggle() {
   const jurusanInput = document.getElementById('input-manual-jurusan');
   const whatsappInput = document.getElementById('input-manual-whatsapp');
 
+  if (!radioMahasiswa || !radioUmum || !studentFields) return;
+
   function setCategory(category) {
     if (category === 'Mahasiswa') {
       radioMahasiswa.classList.add('active');
       radioUmum.classList.remove('active');
       studentFields.style.display = 'block';
 
-      campusInput.required = true;
-      jurusanInput.required = true;
-      whatsappInput.required = true;
+      if (campusInput) campusInput.required = true;
+      if (jurusanInput) jurusanInput.required = true;
+      if (whatsappInput) whatsappInput.required = true;
     } else {
       radioMahasiswa.classList.remove('active');
       radioUmum.classList.add('active');
       studentFields.style.display = 'none';
 
-      campusInput.required = false;
-      jurusanInput.required = false;
-      whatsappInput.required = false;
+      if (campusInput) campusInput.required = false;
+      if (jurusanInput) jurusanInput.required = false;
+      if (whatsappInput) whatsappInput.required = false;
     }
   }
 
   radioMahasiswa.addEventListener('click', () => {
-    radioMahasiswa.querySelector('input').checked = true;
+    const input = radioMahasiswa.querySelector('input');
+    if (input) input.checked = true;
     setCategory('Mahasiswa');
   });
 
   radioUmum.addEventListener('click', () => {
-    radioUmum.querySelector('input').checked = true;
+    const input = radioUmum.querySelector('input');
+    if (input) input.checked = true;
     setCategory('Umum');
   });
 }
